@@ -1,0 +1,17 @@
+.titulo{
+    color:blue;
+    text-align:center;
+    font-size: 30px;
+
+}
+
+.completada{
+    text-decoration:line-through;
+    opacity:0.5;    
+}
+
+#resumen {
+    text-align: center;
+
+}
+
