@@ -1,5 +1,6 @@
 import "./style.css";
 import { render } from "./dom.js";
+import { renderNotas } from "./dom-notas.js";
 
 // Seleccionamos el h1
 const titulo = document.querySelector("h1");
@@ -12,6 +13,10 @@ titulo.classList.add("titulo");
 
 // Pintamos las tareas
 render();
+
+//Llamamos a la función para notas
+
+renderNotas();
 
 
 

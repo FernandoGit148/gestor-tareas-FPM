@@ -1,37 +1,42 @@
+
 import { estado } from "./estado.js";
-import { contarPendientes, contarCompletadas } from "./tareas.js";
+import { contarPendientes } from "./tareas.js";
 
-// Función para pintar las tareas en pantalla
 export function render() {
+  // ERROR 1:
+  // Síntoma: lista es null y aparece un error al intentar
+  // utilizarla.
+  // Causa: getElementById recibe el ID sin el símbolo #.
+  const lista = document.getElementById("lista");
 
-    // Seleccionamos la lista y el resumen
-    const lista = document.querySelector("#lista");
-    const resumen = document.querySelector("#resumen");
+  const resumen = document.querySelector("#resumen");
 
-    // Vaciamos la lista antes de volver a pintarla
-    lista.replaceChildren();
+  // ERROR 2:
+  // Síntoma: solamente aparece la última tarea.
+  // Causa: replaceChildren() estaba dentro del bucle,
+  // por lo que borraba las tareas anteriores en cada vuelta.
+  lista.replaceChildren();
 
-    // Recorremos todas las tareas del estado
-    estado.tareas.forEach((tarea) => {
+  for (const tarea of estado.tareas) {
+    const li = document.createElement("li");
+    li.textContent = tarea.texto;
 
-        // Creamos un elemento li
-        const li = document.createElement("li");
+    // ERROR 3:
+    // Síntoma: todas las tareas aparecen como completadas
+    // y se modifica su estado al renderizar.
+    // Causa: se utilizaba = (asignación) en lugar de ===
+    // (comparación).
+    if (tarea.completada === true) {
+      li.classList.add("completada");
+    }
 
-        // Ponemos el texto de la tarea
-        li.textContent = tarea.texto;
+    lista.append(li);
+  }
 
-        // Si está completada, añadimos la clase CSS
-        if (tarea.completada === true) {
-            li.classList.add("completada");
-        }
-
-        // Añadimos el li a la lista
-        lista.append(li);
-    });
-
-    // Actualizamos el resumen
-    const pendientes = contarPendientes(estado.tareas);
-    const completadas = contarCompletadas(estado.tareas);
-
-    resumen.textContent = `${completadas} completadas · ${pendientes} pendientes`;
+  // ERROR 4:
+  // Síntoma: aparece el texto de la función en vez del
+  // número de tareas pendientes.
+  // Causa: se estaba mostrando la referencia a la función
+  // sin ejecutarla.
+ resumen.textContent = `Tienes ${contarPendientes(estado.tareas)} tareas pendientes`;
 }
